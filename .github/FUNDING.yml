@@ -65,4 +65,4 @@ jobs:
 
       - name: Log Findings
         run: |
-          echo "Security vulnerabilities detected. Check the reports!"
+          echo "Security vulnerabilities detected. Check the report!"
