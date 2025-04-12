@@ -13,44 +13,30 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16'
-
-      - name: Install Dependencies
-        run: |
-          npm install
-
-      - name: Start the Vulnerable App
-        run: |
-          nohup node app.js &  # Run the app in the background
-          sleep 10  # Wait for the app to be fully up
-
       - name: Simulate SQL Injection Attack
         run: |
           echo "Executing SQL Injection Attack..."
-          curl -X POST "https://9961-196-184-98-202.ngrok-free.app/login?returnurl=/" -d "username=admin' OR '1'='1' -- &password="
+          curl -X POST "https://your-ngrok-url.ngrok.io/login" \
+            -d "username=admin' OR '1'='1' -- &password="
 
       - name: Simulate XSS Attack
         run: |
           echo "Executing Cross-Site Scripting (XSS) Attack..."
-          curl -X GET "https://9961-196-184-98-202.ngrok-free.app/search?query=<script>alert('XSS')</script>"
+          curl -X GET "https://your-ngrok-url.ngrok.io/search?query=<script>alert('XSS')</script>"
 
       - name: Run OWASP ZAP Security Scan
         uses: zaproxy/action-baseline@v0.8.0
         with:
-          target: "https://9961-196-184-98-202.ngrok-free.app"
+          target: "https://your-ngrok-url.ngrok.io"
           fail_action: false
-          rules_file_name: zap-rules.txt  # Custom rules
-          allow_issue_writing: true
+          rules_file_name: zap-rules.txt
 
       - name: Run Snyk Security Scan
         uses: snyk/actions/node@master
         with:
           args: test
         env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}  # You need to add this token to GitHub Secrets
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
       - name: Run Gitleaks to Detect Secrets
         uses: gitleaks/gitleaks-action@v2
@@ -65,4 +51,4 @@ jobs:
 
       - name: Log Findings
         run: |
-          echo "Security vulnerabilities detected. Check the report!"
+          echo "Security vulnerabilities detected. Check the reports!"
