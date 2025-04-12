@@ -30,17 +30,17 @@ jobs:
       - name: Simulate SQL Injection Attack
         run: |
           echo "Executing SQL Injection Attack..."
-          curl -X POST "http://localhost:3000/login" -d "username=admin' OR '1'='1' -- &password="
+          curl -X POST "https://9961-196-184-98-202.ngrok-free.app/login?returnurl=/" -d "username=admin' OR '1'='1' -- &password="
 
       - name: Simulate XSS Attack
         run: |
           echo "Executing Cross-Site Scripting (XSS) Attack..."
-          curl -X GET "http://localhost:3000/search?query=<script>alert('XSS')</script>"
+          curl -X GET "https://9961-196-184-98-202.ngrok-free.app/search?query=<script>alert('XSS')</script>"
 
       - name: Run OWASP ZAP Security Scan
         uses: zaproxy/action-baseline@v0.8.0
         with:
-          target: "http://localhost:3000"
+          target: "https://9961-196-184-98-202.ngrok-free.app"
           fail_action: false
           rules_file_name: zap-rules.txt  # Custom rules
           allow_issue_writing: true
